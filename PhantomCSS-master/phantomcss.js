@@ -1,5 +1,5 @@
 /*
-James Cryer / Huddle / 2015
+James Cryer / Huddle / 2016
 https://github.com/Huddle/PhantomCSS
 http://tldr.huddle.com/blog/css-testing/
 */
@@ -406,6 +406,7 @@ function compareFiles( baseFile, file ) {
 			return;
 		}
 
+		casper.thenOpen( 'about:blank', function () {}); // reset page (fixes bug where failure screenshots leak bewteen captures)
 		casper.thenOpen( _resembleContainerPath, function () {
 
 			asyncCompare( baseFile, file, function ( isSame, mismatch ) {
