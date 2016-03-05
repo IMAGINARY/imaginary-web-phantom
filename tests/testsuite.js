@@ -161,7 +161,7 @@ casper.test.begin( 'Imaginary visual tests (' + baseURL + ')', function (test) {
 
   for(var page in pagesToTest) {
 
-    casper.thenOpen(baseURL + '/' + pagesToTest[page].url, (function(page){
+    casper.thenOpen(baseURL + '/' + pagesToTest[page].url + '?testmode=1', (function(page){
       return function() {
         var options = pagesToTest[page];
         if(!options.hasOwnProperty('selector')) {
