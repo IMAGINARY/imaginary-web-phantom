@@ -183,7 +183,7 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
   // Log in
   casper.thenOpen(config.baseURL + '/' + config.loginRoute + '?testmode=1', function then() {
     this.fill('form#user-login', {
-      'name': config.testUserName,
+      'name': config.testUserEmail,
       'pass': config.testUserPass
     }, true);
 
