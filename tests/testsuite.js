@@ -4,7 +4,7 @@ var fs = require( 'fs' );
 var path = fs.absolute( fs.workingDirectory + '/PhantomCSS-master/phantomcss.js' );
 var phantomcss = require( path );
 
-var pagesToTest = {
+var pagesToTest_frontEnd = {
   'home' : {
     url: '',
     selector: 'body'
@@ -136,6 +136,86 @@ var pagesToTest = {
   },
 };
 
+var pagesToTest_backEnd = {
+  'bgmaterial_add': {
+    url: 'node/add/background-material'
+  },
+  'bgmaterial_edit': {
+    url: 'node/833/edit'
+  },
+  'event_add': {
+    url: 'node/add/event'
+  },
+  'event_edit': {
+    url: 'node/942/edit'
+  },
+  'exhibition_add': {
+    url: 'node/add/exhbition'
+  },
+  'exhibition_edit': {
+    url: 'node/132/edit'
+  },
+  'film_add': {
+    url: 'node/add/film'
+  },
+  'film_edit': {
+    url: 'node/565/edit'
+  },
+  'gallery_add': {
+    url: 'node/add/gallery'
+  },
+  'gallery_edit': {
+    url: 'node/181/edit'
+  },
+  'news_add': {
+    url: 'node/add/news'
+  },
+  'news_edit': {
+    url: 'node/953/edit'
+  },
+  'page_add': {
+    url: 'node/add/page'
+  },
+  'page_edit': {
+    url: 'node/17/edit'
+  },
+  'handson_add': {
+    url: 'node/add/physical-ex'
+  },
+  'handson_edit': {
+    url: 'node/453/edit'
+  },
+  'program_add': {
+    url: 'node/add/program'
+  },
+  'program_edit': {
+    url: 'node/828/edit'
+  },
+  'project_add': {
+    url: 'node/add/project'
+  },
+  'project_edit': {
+    url: 'node/857/edit'
+  },
+  'snapshot_add': {
+    url: 'node/add/snapshot'
+  },
+  'snapshot_edit': {
+    url: 'node/940/edit'
+  }
+};
+
+var onLoad = function() {
+  // Hide captcha
+  jQuery('#recaptcha_widget_div').hide();
+};
+
+var onLoadBackEnd = function() {
+  // Open all tabs for screenshot
+  jQuery('.node-form fieldset.vertical-tabs-pane').show();
+  jQuery('.node-form fieldset.horizontal-tabs-pane').removeClass('horizontal-tab-hidden');
+};
+
 casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (test) {
 
   phantomcss.init({
@@ -165,15 +245,16 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
   casper.viewport( 1024, 768 );
 
   // Test anonymous pages
-  for(var page in pagesToTest) {
+  for(var page in pagesToTest_frontEnd) {
 
-    casper.thenOpen(config.baseURL + '/' + pagesToTest[page].url + '?testmode=1', (function(page){
+    casper.thenOpen(config.baseURL + '/' + pagesToTest_frontEnd[page].url + '?testmode=1', (function(page){
       return function() {
-        var options = pagesToTest[page];
+        var options = pagesToTest_frontEnd[page];
         if(!options.hasOwnProperty('selector')) {
           options.selector = '#main';
         }
 
+        casper.evaluate(onLoad);
         console.log("Captured " + page);
         phantomcss.screenshot( options.selector, page );
       }
@@ -192,6 +273,25 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
   casper.thenOpen(config.baseURL + '/' + 'dashboard' + '?testmode=1', function(){
     this.test.assertTextExists('Welcome to your IMAGINARY content page', 'Logged In');
   });
+
+  // Test back end pages
+  for(var page in pagesToTest_backEnd) {
+
+    casper.thenOpen(config.baseURL + '/' + pagesToTest_backEnd[page].url + '?testmode=1', (function(page){
+      return function() {
+        var options = pagesToTest_backEnd[page];
+        if(!options.hasOwnProperty('selector')) {
+          options.selector = '#main';
+        }
+
+        casper.evaluate(onLoad);
+        casper.evaluate(onLoadBackEnd);
+
+        console.log("Captured " + page);
+        phantomcss.screenshot( options.selector, page );
+      }
+    })(page));
+  }
 
   // Log out
   casper.thenOpen(config.baseURL + '/' + config.logoutRoute + '?testmode=1', function() {
