@@ -1,8 +1,8 @@
+var config = require('./config');
+
 var fs = require( 'fs' );
 var path = fs.absolute( fs.workingDirectory + '/PhantomCSS-master/phantomcss.js' );
 var phantomcss = require( path );
-
-var baseURL = 'http://imaginary.local/';
 
 var pagesToTest = {
   'home' : {
@@ -131,7 +131,7 @@ var pagesToTest = {
   },
 };
 
-casper.test.begin( 'Imaginary visual tests (' + baseURL + ')', function (test) {
+casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (test) {
 
   phantomcss.init({
     rebase: casper.cli.get( "rebase" ),
@@ -159,9 +159,10 @@ casper.test.begin( 'Imaginary visual tests (' + baseURL + ')', function (test) {
 
   casper.viewport( 1024, 768 );
 
+  // Test anonymous pages
   for(var page in pagesToTest) {
 
-    casper.thenOpen(baseURL + '/' + pagesToTest[page].url + '?testmode=1', (function(page){
+    casper.thenOpen(config.baseURL + '/' + pagesToTest[page].url + '?testmode=1', (function(page){
       return function() {
         var options = pagesToTest[page];
         if(!options.hasOwnProperty('selector')) {
@@ -173,6 +174,24 @@ casper.test.begin( 'Imaginary visual tests (' + baseURL + ')', function (test) {
       }
     })(page));
   }
+
+  // Log in
+  casper.thenOpen(config.baseURL + '/' + config.loginRoute + '?testmode=1', function then() {
+    this.fill('form#user-login', {
+      'name': config.testUserName,
+      'pass': config.testUserPass
+    }, true);
+
+  });
+
+  casper.then(function(){
+    this.test.assertTextExists('Welcome to your IMAGINARY content page', 'Logged In');
+  });
+
+  // Log out
+  casper.thenOpen(config.baseURL + '/' + config.logoutRoute + '?testmode=1', function() {
+
+  });
 
   casper.then( function now_check_the_screenshots() {
     // compare screenshots
