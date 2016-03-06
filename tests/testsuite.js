@@ -115,19 +115,24 @@ var pagesToTest = {
     url: 'content/terms-of-use'
   },
   'french_home' : {
-    url: 'fr'
+    url: 'fr',
+    selector: 'body'
   },
   'german_home' : {
-    url: 'de'
+    url: 'de',
+    selector: 'body'
   },
   'korean_home' : {
-    url: 'ko'
+    url: 'ko',
+    selector: 'body'
   },
   'spanish_home' : {
-    url: 'es'
+    url: 'es',
+    selector: 'body'
   },
   'turkish_home' : {
-    url: 'tr'
+    url: 'tr',
+    selector: 'body'
   },
 };
 
