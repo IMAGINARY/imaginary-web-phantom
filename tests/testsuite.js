@@ -189,7 +189,7 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
 
   });
 
-  casper.then(function(){
+  casper.thenOpen(config.baseURL + '/' + 'dashboard' + '?testmode=1', function(){
     this.test.assertTextExists('Welcome to your IMAGINARY content page', 'Logged In');
   });
 
