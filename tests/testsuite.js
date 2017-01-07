@@ -1,5 +1,7 @@
 var config = require('./config');
 
+var testcase_filter = casper.cli.options['case'];
+
 var fs = require( 'fs' );
 var path = fs.absolute( fs.workingDirectory + '/PhantomCSS-master/phantomcss.js' );
 var phantomcss = require( path );
@@ -247,6 +249,10 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
   // Test anonymous pages
   for(var page in pagesToTest_frontEnd) {
 
+    if (testcase_filter !== undefined && testcase_filter !== page) {
+      continue;
+    }
+
     casper.thenOpen(config.baseURL + '/' + pagesToTest_frontEnd[page].url + '?testmode=1', (function(page){
       return function() {
         var options = pagesToTest_frontEnd[page];
@@ -276,6 +282,10 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
 
   // Test back end pages
   for(var page in pagesToTest_backEnd) {
+
+    if (testcase_filter !== undefined && testcase_filter !== page) {
+      continue;
+    }
 
     casper.thenOpen(config.baseURL + '/' + pagesToTest_backEnd[page].url + '?testmode=1', (function(page){
       return function() {

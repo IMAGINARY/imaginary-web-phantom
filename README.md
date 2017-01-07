@@ -36,3 +36,9 @@ The first run will generate baseline screenshots in the `screenshots`
 directory. Subsequent executions will compare these screenshots with 
 the new ones and inform of any differences. Failed comparisons are
 stored in the `failures` directory.
+
+## Run only some tests
+
+You can run just one test case by specifying it through the CLI:   
+
+    ./npm test -- --case=home
