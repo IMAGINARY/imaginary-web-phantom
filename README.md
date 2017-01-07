@@ -18,7 +18,7 @@ server, not the production server.
 
 Run:
 
-    node test_env_setup.js_
+    node test_env_setup.js
 
 ## Test environment teardown
 
@@ -30,7 +30,7 @@ Run:
 
 To run the tests execute
 
-    ./runtests
+    ./npm test
   
 The first run will generate baseline screenshots in the `screenshots`
 directory. Subsequent executions will compare these screenshots with 
