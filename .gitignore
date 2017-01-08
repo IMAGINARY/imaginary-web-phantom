@@ -1,6 +1,5 @@
 failures/*.png
 screenshots/*.png
 tests/config.js
-failures/*
 saved screenshots/*
 node_modules
