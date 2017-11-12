@@ -246,6 +246,13 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
 
   casper.viewport( 1024, 768 );
 
+  // Make sure we're logged out
+  casper.thenOpen(config.baseURL + '/' + config.logoutRoute + '?testmode=1', function() {
+  });
+
+  // Wait so cookies can be set
+  casper.wait(1000);
+
   // Test anonymous pages
   for(var page in pagesToTest_frontEnd) {
 
@@ -268,13 +275,17 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
   }
 
   // Log in
-  casper.thenOpen(config.baseURL + '/' + config.loginRoute + '?testmode=1', function then() {
-    this.fill('form#user-login', {
-      'name': config.testUserEmail,
-      'pass': config.testUserPass
-    }, true);
+  casper.thenOpen(config.baseURL + '/' + config.loginRoute + '?testmode=1');
 
+  casper.waitForSelector('form#user-login #edit-name').then(function() {
+    this.fillSelectors('form#user-login', {
+      '#edit-name': config.testUserEmail,
+      '#edit-pass': config.testUserPass
+    }, true);
   });
+
+  // Wait so cookies can be set
+  casper.wait(1000);
 
   casper.thenOpen(config.baseURL + '/' + 'dashboard' + '?testmode=1', function(){
     this.test.assertTextExists('Welcome to your IMAGINARY content page', 'Logged In');
@@ -307,6 +318,9 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
   casper.thenOpen(config.baseURL + '/' + config.logoutRoute + '?testmode=1', function() {
 
   });
+
+  // Wait so cookies can be set
+  casper.wait(1000);
 
   casper.then( function now_check_the_screenshots() {
     // compare screenshots

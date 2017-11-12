@@ -14,18 +14,6 @@ server, not the production server.
 
 - **testUserPass** : Secret password for the test user. 
 
-## Test environment setup
-
-Run:
-
-    node test_env_setup.js
-
-## Test environment teardown
-
-Run:
-
-    node test_env_teardown.js
-
 ## Running the tests
 
 To run the tests execute
