@@ -260,7 +260,14 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
       continue;
     }
 
-    casper.thenOpen(config.baseURL + '/' + pagesToTest_frontEnd[page].url + '?testmode=1', (function(page){
+    casper.thenOpen(config.baseURL + '/' + pagesToTest_frontEnd[page].url + '?testmode=1');
+
+    casper.waitFor(function() {
+      return this.evaluate(function() {
+        var images = document.getElementsByTagName('img');
+        return Array.prototype.every.call(images, function(i) { return i.complete; });
+      });
+    }, (function(page){
       return function() {
         var options = pagesToTest_frontEnd[page];
         if(!options.hasOwnProperty('selector')) {
@@ -271,7 +278,7 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
         console.log("Captured " + page);
         phantomcss.screenshot( options.selector, page );
       }
-    })(page));
+    })(page), null, 90000);
   }
 
   // Log in
@@ -298,7 +305,14 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
       continue;
     }
 
-    casper.thenOpen(config.baseURL + '/' + pagesToTest_backEnd[page].url + '?testmode=1', (function(page){
+    casper.thenOpen(config.baseURL + '/' + pagesToTest_backEnd[page].url + '?testmode=1');
+
+    casper.waitFor(function() {
+      return this.evaluate(function() {
+        var images = document.getElementsByTagName('img');
+        return Array.prototype.every.call(images, function(i) { return i.complete; });
+      });
+    }, (function(page){
       return function() {
         var options = pagesToTest_backEnd[page];
         if(!options.hasOwnProperty('selector')) {
@@ -311,7 +325,7 @@ casper.test.begin( 'Imaginary visual tests (' + config.baseURL + ')', function (
         console.log("Captured " + page);
         phantomcss.screenshot( options.selector, page );
       }
-    })(page));
+    })(page), null, 90000);
   }
 
   // Log out
